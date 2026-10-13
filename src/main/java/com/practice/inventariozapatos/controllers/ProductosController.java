@@ -2,6 +2,9 @@ package com.practice.inventariozapatos.controllers;
 
 import com.practice.inventariozapatos.model.Productos;
 import com.practice.inventariozapatos.services.ProductosServices;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,33 +20,41 @@ public class ProductosController {
     }
 
     @PostMapping
-    public Productos createProductos(@RequestBody Productos newProductos) {
+    public ResponseEntity<Productos> createProductos(@Valid @RequestBody Productos newProductos) {
         Productos productos = productosServices.createProducto(newProductos);
-        return productos;
+        return ResponseEntity.status(HttpStatus.CREATED).body(productos);
     }
 
-    @GetMapping("/")
-    public List<Productos> getProductos() {
-        return productosServices.getProductos();
+    @GetMapping
+    public ResponseEntity<List<Productos>> getProductos() {
+        return ResponseEntity.ok(productosServices.getProductos());
     }
 
     @GetMapping("/{id}")
-    public Productos getProductoById(@PathVariable Long id) {
-        return productosServices.findById(id);
+    public ResponseEntity<Productos> getProductoById(@PathVariable Long id) {
+        Productos producto = productosServices.findById(id);
+
+        if (producto == null){
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(producto);
     }
 
     @PutMapping("/{id}")
-    public Productos updateProducto(@PathVariable Long id, @RequestBody Productos productos) {
+    public ResponseEntity<Productos> updateProducto(@PathVariable Long id, @RequestBody Productos productos) {
         Productos producto1 = productosServices.updateProducto(id, productos);
 
-        return producto1;
+        return ResponseEntity.ok(producto1);
 
     }
 
 
     @DeleteMapping("/{id}")
-    public void deleteProducto(@PathVariable Long id){
+    public ResponseEntity<Void> deleteProducto(@PathVariable Long id){
         productosServices.deleteById(id);
+
+        return ResponseEntity.noContent().build();
     }
 
 
