@@ -21,6 +21,9 @@ public class Productos {
     @Column(nullable = false)
     private Integer talla;
 
+    @Column(nullable = false)
+    private Double precio;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Categoria categoria = Categoria.JORDAN;
