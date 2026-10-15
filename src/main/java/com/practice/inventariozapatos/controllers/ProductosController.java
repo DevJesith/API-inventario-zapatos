@@ -50,6 +50,13 @@ public class ProductosController {
         return ResponseEntity.ok(producto1);
     }
 
+    @PatchMapping("/{id}")
+    public ResponseEntity<ProductoResponseDTO> patchProducto(@PathVariable Long id, @RequestBody ProductoRequestDTO requestDTO) {
+        ProductoResponseDTO producto1 = productosServices.patchProducto(id, requestDTO);
+
+        return ResponseEntity.ok(producto1);
+
+    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteProducto(@PathVariable Long id){
