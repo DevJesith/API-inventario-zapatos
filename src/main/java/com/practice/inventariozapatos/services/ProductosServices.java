@@ -20,6 +20,9 @@ public interface ProductosServices {
     // Editar producto completo
     ProductoResponseDTO updateProducto(Long id, ProductoRequestDTO requestDTO);
 
+    // Editar campo
+    ProductoResponseDTO patchProducto(Long id, ProductoRequestDTO requestDTO);
+
     // Eliminar un producto
     void deleteById(Long id);
 
