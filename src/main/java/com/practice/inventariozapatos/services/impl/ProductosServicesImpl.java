@@ -2,6 +2,8 @@ package com.practice.inventariozapatos.services.impl;
 
 import com.practice.inventariozapatos.dto.ProductoRequestDTO;
 import com.practice.inventariozapatos.dto.ProductoResponseDTO;
+import com.practice.inventariozapatos.exception.GlobalExceptionHandler;
+import com.practice.inventariozapatos.exception.ResourceNotFoundException;
 import com.practice.inventariozapatos.mapper.ProductoMapper;
 import com.practice.inventariozapatos.model.Productos;
 import com.practice.inventariozapatos.repositories.ProductosRepository;
@@ -39,17 +41,13 @@ public class ProductosServicesImpl implements ProductosServices {
 
     @Override
     public ProductoResponseDTO findById(Long id) {
-        Productos findProducto = repository.findById(id).orElse(null);
+        Productos findProducto = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Producto no encontrado"));
         return mapper.toDTO(findProducto);
     }
 
     @Override
     public ProductoResponseDTO updateProducto(Long id, ProductoRequestDTO requestDTO) {
-        Productos getProducto = repository.findById(id).orElse(null);
-
-        if (getProducto == null) {
-            throw new IllegalArgumentException("No existe un metodo con ese nombre");
-        }
+        Productos getProducto = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Producto no encontrado"));
 
         getProducto.setNombre(requestDTO.nombre());
         getProducto.setTalla(requestDTO.talla());
@@ -62,7 +60,7 @@ public class ProductosServicesImpl implements ProductosServices {
 
     @Override
     public ProductoResponseDTO patchProducto(Long id, ProductoRequestDTO requestDTO) {
-        Productos productos = repository.findById(id).orElse(null);
+        Productos productos = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Producto no encontrado"));
 
         if (requestDTO.nombre() != null) {
             productos.setNombre(requestDTO.nombre());
@@ -84,7 +82,7 @@ public class ProductosServicesImpl implements ProductosServices {
     @Override
     public void deleteById(Long id) {
         if (!repository.existsById(id)) {
-            throw new IllegalArgumentException("No existe el producto");
+            throw new ResourceNotFoundException("Producto no encontrado");
         }
 
         repository.deleteById(id);
