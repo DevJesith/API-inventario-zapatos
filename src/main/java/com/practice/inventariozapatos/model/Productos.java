@@ -3,6 +3,8 @@ package com.practice.inventariozapatos.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
+
 @Entity
 @Table(name = "productos")
 @Data
@@ -22,7 +24,7 @@ public class Productos {
     private Integer talla;
 
     @Column(nullable = false)
-    private Double precio;
+    private BigDecimal precio;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
