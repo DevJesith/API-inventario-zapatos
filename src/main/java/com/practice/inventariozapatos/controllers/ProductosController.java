@@ -1,5 +1,7 @@
 package com.practice.inventariozapatos.controllers;
 
+import com.practice.inventariozapatos.dto.ProductoRequestDTO;
+import com.practice.inventariozapatos.dto.ProductoResponseDTO;
 import com.practice.inventariozapatos.model.Productos;
 import com.practice.inventariozapatos.services.ProductosServices;
 import jakarta.validation.Valid;
@@ -20,19 +22,19 @@ public class ProductosController {
     }
 
     @PostMapping
-    public ResponseEntity<Productos> createProductos(@Valid @RequestBody Productos newProductos) {
-        Productos productos = productosServices.createProducto(newProductos);
+    public ResponseEntity<ProductoResponseDTO> createProductos(@Valid @RequestBody ProductoRequestDTO newProductos) {
+        ProductoResponseDTO productos = productosServices.createProducto(newProductos);
         return ResponseEntity.status(HttpStatus.CREATED).body(productos);
     }
 
     @GetMapping
-    public ResponseEntity<List<Productos>> getProductos() {
+    public ResponseEntity<List<ProductoResponseDTO>> getProductos() {
         return ResponseEntity.ok(productosServices.getProductos());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Productos> getProductoById(@PathVariable Long id) {
-        Productos producto = productosServices.findById(id);
+    public ResponseEntity<ProductoResponseDTO> getProductoById(@PathVariable Long id) {
+        ProductoResponseDTO producto = productosServices.findById(id);
 
         if (producto == null){
             return ResponseEntity.notFound().build();
@@ -42,18 +44,15 @@ public class ProductosController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Productos> updateProducto(@PathVariable Long id, @RequestBody Productos productos) {
-        Productos producto1 = productosServices.updateProducto(id, productos);
-
+    public ResponseEntity<ProductoResponseDTO> updateProducto(@PathVariable Long id, @RequestBody ProductoRequestDTO productos) {
+        ProductoResponseDTO producto1 = productosServices.updateProducto(id, productos);
         return ResponseEntity.ok(producto1);
-
     }
 
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteProducto(@PathVariable Long id){
         productosServices.deleteById(id);
-
         return ResponseEntity.noContent().build();
     }
 
